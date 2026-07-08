@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite+aiosqlite:///./data/enrichment.db
+      - APP_ENV=production
+      - LOG_LEVEL=INFO
+      - FRONTEND_URL=http://localhost:3000
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/uploads:/app/uploads
+      - ./backend/outputs:/app/outputs
+      - ./backend/logs:/app/logs
+      - ./backend/projects:/app/projects
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  enrichment_data:

@@ -1,0 +1,32 @@
+{
+  "project_id": "us_investors",
+  "name": "US Investors 2024",
+  "description": "Enrich US venture capital and angel investor contact data",
+  "input_columns": ["Name", "Company", "City", "State"],
+  "target_columns": [
+    "Email",
+    "Phone",
+    "Website",
+    "LinkedIn",
+    "Bio",
+    "Investment Focus",
+    "Portfolio Size"
+  ],
+  "search_sources": ["google", "linkedin", "crunchbase", "sec"],
+  "llm_provider": "gemini",
+  "prompt_template": "us_investors_v1",
+  "validation_rules": {
+    "email": true,
+    "phone": true,
+    "website": true,
+    "confidence_threshold": 0.70
+  },
+  "output": {
+    "format": "excel",
+    "filename": "us_investors_enriched.xlsx",
+    "include_metadata": true
+  },
+  "concurrency": 5,
+  "retries": 3,
+  "timeout_seconds": 45
+}

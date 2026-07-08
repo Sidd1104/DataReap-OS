@@ -1,0 +1,33 @@
+{
+  "project_id": "indian_investors",
+  "name": "Indian Investors 2024",
+  "description": "Enrich Indian startup ecosystem investor contact data",
+  "input_columns": ["Name", "Company", "City"],
+  "target_columns": [
+    "Email",
+    "Phone",
+    "Website",
+    "LinkedIn",
+    "AngelList",
+    "Bio",
+    "Investment Stage",
+    "Focus Sectors"
+  ],
+  "search_sources": ["google", "linkedin", "crunchbase"],
+  "llm_provider": "gemini",
+  "prompt_template": "indian_investors_v1",
+  "validation_rules": {
+    "email": true,
+    "phone": true,
+    "website": true,
+    "confidence_threshold": 0.65
+  },
+  "output": {
+    "format": "excel",
+    "filename": "indian_investors_enriched.xlsx",
+    "include_metadata": true
+  },
+  "concurrency": 5,
+  "retries": 3,
+  "timeout_seconds": 45
+}
